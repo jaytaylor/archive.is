@@ -14,7 +14,7 @@ Created by [Jay Taylor](https://jaytaylor.com/).
 
 ### Requirements
 
-* Go version 1.5 or newer
+* Go version 1.9 or newer
 
 ### Running the test suite
 
