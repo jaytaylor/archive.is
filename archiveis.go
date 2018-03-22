@@ -11,6 +11,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gigawattio/errorlib"
 	"github.com/parnurzeal/gorequest"
+	// log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -27,10 +28,7 @@ func Capture(u string) (string, error) {
 		return "", err
 	}
 
-	// return id, nil
-
 	content := fmt.Sprintf("submitid=%v&url=%v", url.QueryEscape(submitID), url.QueryEscape(u))
-	fmt.Printf("content=%v\n", content)
 	resp, body, errs := newRequest().Post(baseURL+"/submit/").Send(content).Set("content-type", "application/x-www-form-urlencoded").EndBytes()
 	if err := errorlib.Merge(errs); err != nil {
 		return "", err
@@ -38,6 +36,10 @@ func Capture(u string) (string, error) {
 	if resp.StatusCode/100 != 2 {
 		return "", fmt.Errorf("form submit received unhappy response status-code=%v", resp.StatusCode)
 	}
+
+	// log.Debugf("body: %+v\n", string(body))
+	// log.Debugf("headers: %+v\n", resp.Header)
+	// log.Debugf("trailers: %+v\n", resp.Trailer)
 
 	doc, err := goquery.NewDocumentFromReader(bytes.NewBuffer(body))
 	if err != nil {
@@ -50,10 +52,6 @@ func Capture(u string) (string, error) {
 			return match[1], nil
 		}
 	}
-
-	fmt.Printf("body: %+v\n", string(body))
-	fmt.Printf("headers: %+v\n", resp.Header)
-	fmt.Printf("trailers: %+v\n", resp.Trailer)
 
 	input := doc.Find("input[name=id]").First()
 	if input == nil {
