@@ -16,6 +16,33 @@ Created by [Jay Taylor](https://jaytaylor.com/).
 
 * Go version 1.9 or newer
 
+
+### Usage
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/jaytaylor/archive.is"
+)
+
+var inputURL = "https://jaytaylor.com/"
+
+func main() {
+	archiveURL, err := archiveis.Capture(inputURL)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Successfully archived %v via archive.is: %v\n", inputURL, archiveURL)
+}
+
+// Output:
+//
+// Successfully archived https://jaytaylor.com/ via archive.is: https://archive.is/i2PiW
+```
+
 ### Running the test suite
 
     go test ./...
