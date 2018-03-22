@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/jaytaylor/archive.is.svg?branch=master)](https://travis-ci.org/jaytaylor/archiveis)
 [![Report Card](https://goreportcard.com/badge/github.com/jaytaylor/archive.is)](https://goreportcard.com/report/github.com/jaytaylor/archive.is)
 
-### About.
+### About
 
 archive.is is a golang package for archiving web pages via [archive.is](https://archive.is).
 
