@@ -7,10 +7,13 @@ import (
 	"time"
 )
 
-const page = "https://yro.slashdot.org/story/18/03/21/2112247/russia-secretly-helped-venezuela-launch-a-cryptocurrency-to-evade-us-sanctions#comments"
+const (
+	page     = "https://github.com/jaytaylor/archive.is"
+	maxSleep = 60
+)
 
 func TestCapture1(t *testing.T) {
-	randSleep(t, 60)
+	randSleep(t, maxSleep)
 
 	// Link which has been submitted before.
 	url, err := Capture(page)
@@ -21,10 +24,28 @@ func TestCapture1(t *testing.T) {
 }
 
 func TestCapture2(t *testing.T) {
-	randSleep(t, 60)
+	randSleep(t, maxSleep)
 
 	// Link which has likely not been submitted before.
 	url, err := Capture(fmt.Sprintf("%v?%v", page, time.Now().Unix()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("Resolved URL=%q", url)
+}
+
+func TestCapture3(t *testing.T) {
+	randSleep(t, maxSleep)
+
+	cfg := Config{
+		Wait:           true,
+		WaitTimeout:    180 * time.Second,
+		PollInterval:   15 * time.Second,
+		RequestTimeout: 15 * time.Second,
+	}
+
+	// Link which has likely not been submitted before.
+	url, err := Capture(fmt.Sprintf("%v?%v", page, time.Now().Unix()), cfg)
 	if err != nil {
 		t.Fatal(err)
 	}
