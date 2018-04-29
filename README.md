@@ -16,6 +16,11 @@ Created by [Jay Taylor](https://jaytaylor.com/).
 
 * Go version 1.9 or newer
 
+### Installation
+
+```bash
+go get github.com/jaytaylor.com/archive.is/...
+```
 
 ### Usage
 
