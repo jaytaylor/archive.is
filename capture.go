@@ -160,6 +160,9 @@ func waitForCrawlToFinish(url string, body []byte, requestTimeout time.Duration,
 
 	if body != nil && !expr.Match(body) {
 		log.WithField("url", url).WithField("wait-timeout", waitTimeout).WithField("poll-interval", pollInterval).Debugf("Detected crawl completion after %s", d)
+		if err := checkCrawlResult(body); err != nil {
+			return err
+		}
 		return nil
 	}
 
@@ -181,6 +184,20 @@ func waitForCrawlToFinish(url string, body []byte, requestTimeout time.Duration,
 		}
 
 		time.Sleep(pollInterval)
+	}
+	return nil
+}
+
+// checkCrawlResult searches for known archive.is errors in HTML content.
+func checkCrawlResult(body []byte) error {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewBuffer(body))
+	if err != nil {
+		return fmt.Errorf("crawl result check gq new doc: %s", err)
+	}
+	if block := doc.Find("html > body > div").First(); block != nil {
+		if text := strings.Trim(block.Text(), "\r\n\t "); text == "Error: Network error." {
+			return fmt.Errorf("archive.is crawl result: Network Error")
+		}
 	}
 	return nil
 }
