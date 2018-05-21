@@ -27,6 +27,7 @@ var (
 
 // Config settings for page capture client behavior.
 type Config struct {
+	Anyway         bool          // Force archival even if there is already a recent snapshot of the page.
 	Wait           bool          // Wait until the crawl has been completed.
 	WaitTimeout    time.Duration // Max time to wait for crawl completion.  Default is unlimited.
 	PollInterval   time.Duration // Interval between crawl completion checks.  Defaults to 5s.
@@ -43,6 +44,7 @@ func Capture(u string, cfg ...Config) (string, error) {
 
 	var (
 		submitID string
+		anyway   string
 		body     []byte
 		resp     *http.Response
 		final    string
@@ -56,7 +58,11 @@ func Capture(u string, cfg ...Config) (string, error) {
 		return "", err
 	}
 
-	content := fmt.Sprintf("submitid=%v&url=%v", url.QueryEscape(submitID), url.QueryEscape(u))
+	if len(cfg) > 0 && cfg[0].Anyway {
+		anyway = "&anyway=1"
+	}
+
+	content := fmt.Sprintf("submitid=%v&url=%v%v", url.QueryEscape(submitID), url.QueryEscape(u), anyway)
 
 	resp, body, err = doRequest("POST", BaseURL+"/submit/", ioutil.NopCloser(bytes.NewBufferString(content)), timeout)
 	if err != nil {

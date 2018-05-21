@@ -17,6 +17,7 @@ var (
 	RequestTimeout time.Duration = archiveis.DefaultRequestTimeout
 	PollInterval   time.Duration = archiveis.DefaultPollInterval
 	WaitTimeout    time.Duration = time.Duration(0)
+	Anyway         bool
 	submitID       string
 )
 
@@ -27,6 +28,7 @@ func init() {
 	rootCmd.PersistentFlags().DurationVarP(&RequestTimeout, "request-timeout", "r", RequestTimeout, "Timeout duration for HTTP requests")
 	rootCmd.PersistentFlags().DurationVarP(&PollInterval, "poll-interval", "p", PollInterval, "Poll interval, only applies when -w/--wait is active")
 	rootCmd.PersistentFlags().DurationVarP(&WaitTimeout, "wait-timeout", "", WaitTimeout, "Maximum wait duration, only applies when -w/--wait is active (default: infinite)")
+	rootCmd.PersistentFlags().BoolVarP(&Anyway, "anyway", "a", false, "Force archival even if there is already a recent snapshot of the page")
 	rootCmd.PersistentFlags().StringVarP(&archiveis.BaseURL, "base-url", "b", archiveis.BaseURL, "Archive.is server base URL address")
 	rootCmd.PersistentFlags().StringVarP(&archiveis.HTTPHost, "http-host", "", archiveis.HTTPHost, "'Host' header to use")
 	rootCmd.PersistentFlags().StringVarP(&archiveis.UserAgent, "user-agent", "u", archiveis.UserAgent, "'User-Agent' header to use")
@@ -49,6 +51,7 @@ var rootCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg := archiveis.Config{
+			Anyway:   Anyway,
 			Wait:     Wait,
 			SubmitID: submitID,
 		}
