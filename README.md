@@ -12,6 +12,8 @@ Please be mindful and responsible and go easy on them, we want archive.is to las
 
 Created by [Jay Taylor](https://jaytaylor.com/).
 
+Also see: [archive.org golang package](https://jaytaylor.com/archive.org)
+
 ### Requirements
 
 * Go version 1.9 or newer
@@ -19,7 +21,7 @@ Created by [Jay Taylor](https://jaytaylor.com/).
 ### Installation
 
 ```bash
-go get github.com/jaytaylor.com/archive.is/...
+go get jaytaylor.com/archive.is/...
 ```
 
 ### Usage
@@ -28,9 +30,9 @@ go get github.com/jaytaylor.com/archive.is/...
 
 ##### `archive.is <url>`
 
-Archive a new fresh copy of an HTML page
+Archive a fresh new copy of an HTML page
 
-##### `archive.is-snapshots`
+##### `archive.is-snapshots <url>`
 
 Search for existing page snapshots
 
