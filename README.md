@@ -14,6 +14,11 @@ Created by [Jay Taylor](https://jaytaylor.com/).
 
 Also see: [archive.org golang package](https://jaytaylor.com/archive.org)
 
+### TODO
+
+* Add timeout to `.Capture`.
+* Consider unifying to single binary
+
 ### Requirements
 
 * Go version 1.9 or newer
